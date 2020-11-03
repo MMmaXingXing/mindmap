@@ -1,30 +1,16 @@
-<img src="./public/mindmap.jpg" width="300"/>
+<img src="./public/Snipaste_2020-11-03_14-59-02.png" width="300"/>
 
-# 思维导图VUE组件
+# 思维导图VUE D3实现
 
-![npm](https://img.shields.io/npm/v/@hellowuxin/mindmap)
-![npm](https://img.shields.io/npm/dm/@hellowuxin/mindmap)
-
-> 一个由[MindNode](https://mindnode.com)启发的思维导图Vue组件，基于d3.js实现  
-> 目前实现的功能有基本的编辑、拖移、缩放、撤销、上下文菜单、折叠...
-
-在线演示：<https://mindnode.5xin.xyz/>
-
-## 近期更新
-
-- 左键多选
-
-## 安装
-
-```sh
-npm install @hellowuxin/mindmap
-```
+> 在https://github.com/hellowuxin/mindmap基础上修改，自定义item宽高以及展示渲染
 
 ## PROPS
 
 | Name        | Type   | Default   | Description          |
 | ---         | ---    | ---       | ---                  |
 | v-model     | Array  | undefined | 设置思维导图数据        |
+| itemWidth   | Number | 280       | 设置组件内Item宽度     |
+| itemHeight  | Number | 160       | 设置组件内Item高度     |
 | width       | Number | 100%      | 设置组件宽度           |
 | height      | Number | undefined | 设置组件高度           |
 | xSpacing    | Number | 80        | 设置节点横向间隔        |
@@ -46,6 +32,7 @@ npm install @hellowuxin/mindmap
 | ---            | ---       | ---                            |
 | updateNodeName | data, id  | 更新节点名称时，传入节点数据和节点id |
 | click          | data, id  | 点击节点时，传入节点数据和节点id    |
+| randerFun      | parentItem, data  | 方法内可对item进行修改渲染          |
 
 ## 样例
 
@@ -99,9 +86,3 @@ export default {
 
 **触控板**：双指滚动移动、双指菜单、双指捏合缩放、单指选中
 
-## 待解决
-
-- [ ] 导出多种格式
-- [ ] 设置节点的宽高
-- [ ] 多个根节点
-- [ ] ...

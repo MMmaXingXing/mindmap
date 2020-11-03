@@ -13,7 +13,7 @@
           { "name":"test" }
         ]
       },
-      { 
+      {
         "name":"安装",
         "_children": [
           { "name": "折叠节点" }
@@ -40,9 +40,9 @@
         ],
         "left": true
       },
-      { 
+      {
         "name":"进阶",
-        "left": true 
+        "left": true
       },
       {
         "name":"一级节点",
