@@ -78,7 +78,10 @@
       "eslint:recommended",
       "@vue/typescript"
     ],
-    "rules": {},
+    "rules": {
+      "quotes": { "avoidEscape": true },
+      "semi": "always"
+    },
     "parserOptions": {
       "parser": "@typescript-eslint/parser"
     },

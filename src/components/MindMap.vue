@@ -135,7 +135,10 @@ let mmdata: ImData; // 思维导图数据
 export default class MindMap extends Vue {
   @Prop() width: number | undefined;
   @Prop() height: number | undefined;
-  @Prop() randerFun!: (a: d3.Selection<d3.BaseType, FlexNode, Element, FlexNode>, d: FlexNode) => void;
+  @Prop() randerFun!: (
+    a: d3.Selection<d3.BaseType, FlexNode, Element, FlexNode>,
+    d: FlexNode
+  ) => void;
   @Prop({ default: 280 }) itemWidth!: number;
   @Prop({ default: 160 }) itemHeight!: number;
   @Prop({ default: 50 }) xSpacing!: number;
@@ -246,7 +249,7 @@ export default class MindMap extends Vue {
     .duration(1000)
     .ease(d3.easePolyInOut);
   link = d3
-    .linkHorizontal()
+    .linkVertical()
     .x((d) => d[0])
     .y((d) => d[1]);
   zoom = d3.zoom() as d3.ZoomBehavior<Element, FlexNode>;
@@ -1278,7 +1281,7 @@ export default class MindMap extends Vue {
       gBtnSide,
       gBtnVisible,
       gEllVisible,
-      randerFun
+      randerFun,
     } = this;
     const gNode = enter
       .append("g")
@@ -1302,7 +1305,7 @@ export default class MindMap extends Vue {
       .on("keydown", divKeyDown)
       .on("mousedown", fdivMouseDown);
     foreignDiv.each((d, i, n) => {
-      const observer = new ResizeObserver((l) => {
+      const observer = new ResizeObserver((l: any) => {
         const t = l[0].target;
         const b1 = getComputedStyle(t).borderTopWidth;
         const b2 = getComputedStyle(t.parentNode as Element).borderTopWidth;
@@ -1602,7 +1605,7 @@ svg .democard {
   opacity: 1;
   z-index: 1;
 }
-.democard .card-tree{
+.democard .card-tree {
   width: 100%;
   height: 100%;
 }

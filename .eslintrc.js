@@ -4,7 +4,6 @@ module.exports = {
     es2020: true,
   },
   extends: [
-    'plugin:vue/essential',
     'standard',
   ],
   parserOptions: {
@@ -21,6 +20,6 @@ module.exports = {
     'space-before-function-paren': ['error', 'never'],
     'comma-dangle': ['error', 'always-multiline'],
     'operator-linebreak': ['error', 'before'],
-    semi: ['error', 'never'],
+    semi: 0,
   },
 }

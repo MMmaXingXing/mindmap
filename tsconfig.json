@@ -37,6 +37,10 @@
     "tests/**/*.ts",
     "tests/**/*.tsx", "src/plugins/element.js"
   ],
+  "rules": {
+    "quotes": { "avoidEscape": true },
+    "semi": "always"
+  },
   "exclude": [
     "node_modules"
   ]
