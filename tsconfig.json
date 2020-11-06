@@ -7,11 +7,12 @@
     "emitDecoratorMetadata": true,
     "jsx": "preserve",
     "importHelpers": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
+    "moduleResolution": "node", // 如何处理模块
+    "experimentalDecorators": true, // 启用装饰器模式
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
+    "allowJs": true, // 允许编译js
     "baseUrl": ".",
     "types": [
       "webpack-env",
@@ -24,6 +25,9 @@
       ]
     },
     "lib": [
+      "es5",
+      "es6",
+      "es7",
       "esnext",
       "dom",
       "dom.iterable",
@@ -37,10 +41,6 @@
     "tests/**/*.ts",
     "tests/**/*.tsx", "src/plugins/element.js"
   ],
-  "rules": {
-    "quotes": { "avoidEscape": true },
-    "semi": "always"
-  },
   "exclude": [
     "node_modules"
   ]

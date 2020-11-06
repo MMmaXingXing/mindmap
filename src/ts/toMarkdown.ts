@@ -1,3 +1,5 @@
+import { Data } from './index'
+
 function deepTraverse(d: Array<Data>, m: string, md: string, flag: string) {
   for (let index = 0; index < d?.length; index += 1) {
     const dChild = d[index]

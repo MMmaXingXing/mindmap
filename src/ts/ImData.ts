@@ -1,5 +1,6 @@
 import * as d3ScaleChromatic from 'd3-scale-chromatic'
 import * as d3Scale from 'd3-scale'
+import { Mdata, Data } from './index'
 
 const colorScale = d3Scale.scaleOrdinal(d3ScaleChromatic.schemePaired) // 颜色列表
 let colorNumber = 0

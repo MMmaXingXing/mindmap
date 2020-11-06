@@ -1,3 +1,4 @@
+import { Mdata } from './index'
 class History {
   maxSnapshots: number
   snapshots: Array<Mdata>

@@ -1,8 +1,12 @@
 module.exports = {
-  "css": {
-    "extract": false
+  css: {
+    extract: false,
   },
-  "transpileDependencies": [
-    "vuetify"
-  ]
+  transpileDependencies: [
+    'vuetify',
+  ],
+  chainWebpack: config => {
+    // 修复HMR
+    config.resolve.symlinks(true)
+  },
 }

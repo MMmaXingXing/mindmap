@@ -14,7 +14,6 @@
                       <v-icon>mind-github</v-icon>
                     </v-btn>
                   </div>
-                  <!-- <v-divider vertical></v-divider> -->
                 </div>
                 <v-divider></v-divider>
                 <div class="d-flex flex-grow-1">
@@ -103,6 +102,7 @@ import dataLearn from '../public/learn.json'
 import mindmap from './components/MindMap.vue'
 import Card from "./card.vue";
 import * as d3 from "./ts/d3";
+import { Data, Mdata, FlexNode } from "./ts/index";
 
 @Component({ components: { mindmap, Card } })
 export default class App extends Vue {
