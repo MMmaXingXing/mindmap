@@ -1,43 +1,44 @@
 <template>
   <div>
     <el-card class="card-tree">
-    <div class="card">
-      <div class="title-descript">
-        我是用来测试的ui（可以更改）
+      <div class="card">
+        <div class="title-descript">
+          我是用来测试的ui（可以更改）
+        </div>
+        <section class="content">
+          <div class="describ">
+            <p>
+              我是第一条Ui的描述
+            </p>
+            <p>
+              第二条描述
+            </p>
+            <p>
+              展示的ui样式
+            </p>
+          </div>
+          <div class="process">
+            <el-progress
+              :width="80"
+              type="circle"
+              :percentage="90"
+            ></el-progress>
+          </div>
+        </section>
+        <footer>
+          <slot name="footer"></slot>
+        </footer>
       </div>
-      <section class="content">
-        <div class="describ">
-          <p >
-            我是第一条Ui的描述
-          </p>
-          <p>
-            第二条描述
-          </p>
-          <p >
-            展示的ui样式
-          </p>
-        </div>
-        <div class="process">
-          <el-progress
-            :width="80"
-            type="circle"
-            :percentage="90"></el-progress>
-        </div>
-      </section>
-      <footer>
-        <slot name="footer"></slot>
-      </footer>
-    </div>
-  </el-card>
+    </el-card>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator"
+import { Vue, Component } from "vue-property-decorator";
 
 @Component
 export default class TargetCard extends Vue {
-  private isTreList = false
+  private isTreList = false;
 }
 </script>
 <style>

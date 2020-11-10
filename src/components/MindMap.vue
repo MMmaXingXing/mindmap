@@ -129,6 +129,7 @@ import { flextree } from "d3-flextree";
 import ImData from "../ts/ImData";
 import History from "../ts/History";
 import toMarkdown from "../ts/toMarkdown";
+import { FlexNode, Mdata, Data } from "../ts/index";
 
 let mmdata: ImData; // 思维导图数据
 @Component
@@ -216,28 +217,28 @@ export default class MindMap extends Vue {
   contextMenuItems = [
     { title: "删除节点", name: "delete", disabled: false },
     { title: "折叠节点", name: "collapse", disabled: false },
-    { title: "展开节点", name: "expand", disabled: false },
+    { title: "展开节点", name: "expand", disabled: false }
   ];
   optionList = [
     {
       title: "JSON",
       icon: "code-json",
       tip: "创建一个JSON格式的文本文件",
-      color: "purpleOpt",
+      color: "purpleOpt"
     },
     {
       title: "图像",
       icon: "image",
       tip: "创建一个PNG格式的图像文件",
       color: "greenOpt",
-      disabled: true,
+      disabled: true
     },
     {
       title: "Markdown",
       icon: "markdown",
       tip: "创建一个Markdown格式的文本文件",
-      color: "grassOpt",
-    },
+      color: "grassOpt"
+    }
   ];
   selectedOption = 0;
   mindmapSvg!: d3.Selection<Element, FlexNode, null, undefined>;
@@ -250,15 +251,15 @@ export default class MindMap extends Vue {
     .ease(d3.easePolyInOut);
   link = d3
     .linkVertical()
-    .x((d) => d[0])
-    .y((d) => d[1]);
+    .x(d => d[0])
+    .y(d => d[1]);
   zoom = d3.zoom() as d3.ZoomBehavior<Element, FlexNode>;
   history = new History();
 
   get mmStyle() {
     return {
       width: this.width ? `${this.width}px` : "100%",
-      height: this.height ? `${this.height}px` : "100%",
+      height: this.height ? `${this.height}px` : "100%"
     };
   }
   get svgClass() {
@@ -289,7 +290,7 @@ export default class MindMap extends Vue {
       left: x,
       top: y,
       right: x + width,
-      bottom: y + height,
+      bottom: y + height
     };
   }
 
@@ -302,13 +303,13 @@ export default class MindMap extends Vue {
       left: pageX,
       top: pageY,
       right: pageX,
-      bottom: pageY,
+      bottom: pageY
     };
     return {
       left: left - viewLeft,
       top: top - viewTop,
       right: right - viewLeft,
-      bottom: bottom - viewTop,
+      bottom: bottom - viewTop
     };
   }
   updateMmdata(val?: Mdata | null) {
@@ -767,12 +768,12 @@ export default class MindMap extends Vue {
           const node = d3
             .select(pNode)
             .selectAll(`g.node.depth_${depth}`)
-            .filter((b) => (b as FlexNode).data.id === newD.id)
+            .filter(b => (b as FlexNode).data.id === newD.id)
             .node();
 
           this.editNode(node as Element);
         },
-        (err) => {
+        err => {
           console.log(err);
         }
       );
@@ -849,9 +850,9 @@ export default class MindMap extends Vue {
         t.push(d.data);
       });
       const collapseFlag =
-        t.filter((d) => d.children && d.children.length > 0).length > 0;
+        t.filter(d => d.children && d.children.length > 0).length > 0;
       const expandFlag =
-        t.filter((d) => d._children && d._children.length > 0).length > 0;
+        t.filter(d => d._children && d._children.length > 0).length > 0;
       this.contextMenuItems[1].disabled = !collapseFlag;
       this.contextMenuItems[2].disabled = !expandFlag;
       this.contextMenuTarget = t;
@@ -951,7 +952,7 @@ export default class MindMap extends Vue {
     // 更新draggedNode与父节点的path
     d3.select(`path#path_${d.data.id}`)
       .transition(tran as any)
-      .attr("d", (d) => path(d as FlexNode));
+      .attr("d", d => path(d as FlexNode));
   }
   renewOffset(d: FlexNode, px: number, py: number) {
     // 更新偏移量
@@ -1000,7 +1001,7 @@ export default class MindMap extends Vue {
             y: foreignX(d) + d.y, // foreignObject的x轴偏移
             x: foreignY(d) + d.x, // foreignObject的y轴偏移
             width: d.size[1] - xSpacing,
-            height: d.size[0],
+            height: d.size[0]
           };
           // 重叠触发矩形边框
           if (
@@ -1244,7 +1245,7 @@ export default class MindMap extends Vue {
 
     return `${link({
       source: [sourceX, sourceY],
-      target: [0, 0],
+      target: [0, 0]
     })}L${textWidth},${0}`;
   }
   nest(d: FlexNode, i: number, n: ArrayLike<Element>) {
@@ -1281,7 +1282,7 @@ export default class MindMap extends Vue {
       gBtnSide,
       gBtnVisible,
       gEllVisible,
-      randerFun,
+      randerFun
     } = this;
     const gNode = enter
       .append("g")
@@ -1407,7 +1408,7 @@ export default class MindMap extends Vue {
       pathColor,
       path,
       nest,
-      foreignX,
+      foreignX
     } = this;
     update
       .interrupt()
@@ -1496,7 +1497,7 @@ export default class MindMap extends Vue {
     console.log(layout);
     const tl = layout.hierarchy(mmdata.data, (d: Mdata) =>
       d.id.split("-").length === 1
-        ? d.children?.filter((d) => d.left)
+        ? d.children?.filter(d => d.left)
         : d.children
     );
     layout(tl);
@@ -1508,7 +1509,7 @@ export default class MindMap extends Vue {
     // right
     const tr = layout.hierarchy(mmdata.data, (d: Mdata) =>
       d.id.split("-").length === 1
-        ? d.children?.filter((d) => !d.left)
+        ? d.children?.filter(d => !d.left)
         : d.children
     );
     layout(tr);
@@ -1566,7 +1567,7 @@ export default class MindMap extends Vue {
   addWatch() {
     this.$watch(
       "value",
-      (newVal) => {
+      newVal => {
         if (this.toUpdate) {
           mmdata = new ImData(newVal[0], this.getSize);
           this.updateMmdata();

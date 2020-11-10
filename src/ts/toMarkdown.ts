@@ -1,26 +1,27 @@
-import { Data } from './index'
+import { Data } from "./index";
 
 function deepTraverse(d: Array<Data>, m: string, md: string, flag: string) {
   for (let index = 0; index < d?.length; index += 1) {
-    const dChild = d[index]
-    if (m.length > 3 && m[0] === '#') { // #### 替换成 -
-      md += `- ${dChild.name}\n`
+    const dChild = d[index];
+    if (m.length > 3 && m[0] === "#") {
+      // #### 替换成 -
+      md += `- ${dChild.name}\n`;
       if (dChild.children) {
-        md = deepTraverse(dChild.children, '  -', md, '  ')
+        md = deepTraverse(dChild.children, "  -", md, "  ");
       }
     } else {
-      md += `${m} ${dChild.name}\n`
+      md += `${m} ${dChild.name}\n`;
       if (dChild.children) {
-        md = deepTraverse(dChild.children, `${flag}${m}`, md, flag)
+        md = deepTraverse(dChild.children, `${flag}${m}`, md, flag);
       }
     }
   }
-  return md
+  return md;
 }
 
 function toMarkdown(data: Data) {
-  const d = Array.isArray(data) ? data : [data]
-  return deepTraverse(d, '#', '', '#')
+  const d = Array.isArray(data) ? data : [data];
+  return deepTraverse(d, "#", "", "#");
 }
 
-export default toMarkdown
+export default toMarkdown;

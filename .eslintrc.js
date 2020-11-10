@@ -1,40 +1,41 @@
 module.exports = {
+  root: true,
   env: {
-    browser: true,
-    es2020: true,
-    commonjs: true,
-    es6: true,
-    node: true,
+    node: true
   },
   extends: [
-    'standard',
-    'eslint:recommended',
+    "plugin:vue/essential",
+    "eslint:recommended",
+    "@vue/typescript/recommended",
+    "@vue/prettier",
+    "@vue/prettier/@typescript-eslint"
   ],
-  parser: 'babel-eslint',
   parserOptions: {
     ecmaVersion: 2020,
-    parser: '@typescript-eslint/parser',
-    sourceType: 'module',
+    ecmaFeatures: {
+      " jsx ": true,
+      " modules ": true,
+      " experimentalObjectRestSpread ": true
+    }
   },
-  plugins: [
-    'vue',
-    '@typescript-eslint',
-  ],
   rules: {
-    'lines-between-class-members': 0,
-    'space-before-function-paren': ['error', 'never'],
-    'comma-dangle': ['error', 'always-multiline'],
-    'operator-linebreak': ['error', 'before'],
+    "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+    "no-useless-escape": "off",
+    "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/camelcase": "off",
+    "@typescript-eslint/interface-name-prefix": "off",
+    "@typescript-eslint/no-explicit-any": "off"
   },
   overrides: [
     {
       files: [
-        '**/__tests__/*.{j,t}s?(x)',
-        '**/tests/unit/**/*.spec.{j,t}s?(x)',
+        "**/__tests__/*.{j,t}s?(x)",
+        "**/tests/unit/**/*.spec.{j,t}s?(x)"
       ],
       env: {
-        mocha: true,
-      },
-    },
-  ],
-}
+        mocha: true
+      }
+    }
+  ]
+};
