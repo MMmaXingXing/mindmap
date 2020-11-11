@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "strict": true,
+    "resolveJsonModule": true,
+    "emitDecoratorMetadata": true,
+    "jsx": "preserve",
+    "importHelpers": true,
+    "moduleResolution": "node", // 如何处理模块
+    "experimentalDecorators": true, // 启用装饰器模式
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "allowJs": true, // 允许编译js
+    "baseUrl": ".",
+    "types": [
+      "webpack-env",
+      "vuetify",
+      "resize-observer-browser"
+    ],
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "lib": [
+      "es5",
+      "es6",
+      "es7",
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "tests/**/*.ts",
+    "tests/**/*.tsx", "src/plugins/element.js"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

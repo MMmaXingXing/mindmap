@@ -1319,6 +1319,7 @@ export default class MindMap extends Vue {
         randerFun(foreignDiv, d);
       });
       observer.observe(n[i] as Element);
+      aaaa
     });
 
     // button
