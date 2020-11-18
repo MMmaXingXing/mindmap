@@ -2,15 +2,7 @@
   <v-app>
     <v-main>
       <div>
-        <div id="showSvgTree">
-          <VueSvgTree :treeData="treeData" svgId="svg" ref="svgTree" />
-        </div>
-        <!-- <vue-svg-tree
-          :treeData="treeData"
-          svgId="svg"
-          ref="svgTree"
-        ></vue-svg-tree> -->
-        <!-- <super-flow></super-flow> -->
+        <MindMap />
       </div>
     </v-main>
   </v-app>
@@ -19,13 +11,11 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 // import dataLearn from "../public/learn.json";
-// import VueSvgTree from "vue-svg-tree";
-// import SuperFlow from "vue-super-flow";
-import VueSvgTree from "./components/MindTree.vue";
+import MindMap from "./components/MindMap.vue";
 import html2canvas from "html2canvas";
 // import "vue-super-flow/lib/index.css";
 
-@Component({ components: { VueSvgTree } })
+@Component({ components: { MindMap } })
 export default class App extends Vue {
   private treeData = [
     {

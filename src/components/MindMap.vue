@@ -250,7 +250,7 @@ export default class MindMap extends Vue {
     .duration(1000)
     .ease(d3.easePolyInOut);
   link = d3
-    .linkVertical()
+    .linkHorizontal()
     .x(d => d[0])
     .y(d => d[1]);
   zoom = d3.zoom() as d3.ZoomBehavior<Element, FlexNode>;
@@ -1172,7 +1172,7 @@ export default class MindMap extends Vue {
     return `depth_${d.depth} node`;
   }
   gTransform(d: FlexNode) {
-    return `translate(${d.dy},${d.dx})`;
+    return `translate(${d.dx},${d.dy})`;
   }
   foreignX(d: FlexNode) {
     const { xSpacing, foreignBorderWidth } = this;
@@ -1182,13 +1182,13 @@ export default class MindMap extends Vue {
         ? d.data.left
           ? -d.size[1] + xSpacing
           : 0
-        : -(d.size[1] - xSpacing * 2) / 2)
+        : -(d.size[1] - xSpacing) / 2)
     );
   }
   foreignY(d: FlexNode) {
     return (
       -this.foreignBorderWidth +
-      (d.data.id !== "0" ? -d.size[0] : -d.size[0] / 2)
+      (-d.size[0] / 2)
     );
   }
   gBtnTransform(d: FlexNode) {
@@ -1236,16 +1236,18 @@ export default class MindMap extends Vue {
         : d.data.left
         ? xSpacing
         : -xSpacing;
-    const sourceX = temp - d.py;
-    const sourceY = 0 - d.dx - d.px;
-    let textWidth = d.size[1] - xSpacing;
-    if (d.data.left) {
-      textWidth = -textWidth;
-    }
+    // debugger;
+    const sourceX = -d.dx + xSpacing;
+    const sourceY = -d.dy;
+    const textWidth = 0;
+    // let textWidth = d.size[1] - xSpacing;
+    // if (d.data.left) {
+    //   textWidth = -textWidth;
+    // }
 
     return `${link({
       source: [sourceX, sourceY],
-      target: [0, 0]
+      target: [-sourceX / 3, d.size[0] / 2]
     })}L${textWidth},${0}`;
   }
   nest(d: FlexNode, i: number, n: ArrayLike<Element>) {
@@ -1478,7 +1480,6 @@ export default class MindMap extends Vue {
     // 生成svg
     const { dKey, mindmapG, appendNode, updateNode, exitNode } = this;
     console.log("rootList", this.root);
-    debugger;
     const d = [this.root];
     console.log(`.depth_${d[0].depth}.node`);
     (mindmapG.selectAll(
@@ -1494,7 +1495,6 @@ export default class MindMap extends Vue {
     const yGap = mmdata.data.size[1] / 2;
     console.log("tree-mmdata.size", mmdata.data);
     // left
-    console.log(layout);
     const tl = layout.hierarchy(mmdata.data, (d: Mdata) =>
       d.id.split("-").length === 1
         ? d.children?.filter(d => d.left)
@@ -1506,7 +1506,6 @@ export default class MindMap extends Vue {
         a.y = -a.y + yGap;
       }
     });
-    console.log(tl)
     // right
     const tr = layout.hierarchy(mmdata.data, (d: Mdata) =>
       d.id.split("-").length === 1
@@ -1516,8 +1515,10 @@ export default class MindMap extends Vue {
     layout(tr);
     tr.each((a: FlexNode) => {
       if (a.data.id !== "0") {
-        a.y = a.y - yGap;
+        a.x = a.x + yGap * 2;
       }
+      a.y = a.depth * (a.size[0] + yGap);
+      // debugger;
     }); // 往同个方向移动固定距离
     // all
     tr.children = tl.children
@@ -1528,14 +1529,14 @@ export default class MindMap extends Vue {
     tr.each((a: FlexNode) => {
       // x纵轴 y横轴 dx dy相对偏移
       if (a.data.id !== "0") {
-        a.x += a.size[0] / 2;
+        a.x += a.size[1] / 2;
       }
-      a.dx = a.x - (a.parent ? a.parent.x : 0);
-      a.dy = a.y - (a.parent ? a.parent.y : 0);
+      a.dx = a.x + (a.parent ? a.parent.x : 0) + yGap;
+      a.dy = a.y;
       a.px = 0;
       a.py = 0;
+      // debugger;
     });
-    console.log(tr)
     this.root = tr;
   }
   getDTop() {
@@ -1557,7 +1558,7 @@ export default class MindMap extends Vue {
     //   })
     textWidth = this.itemWidth || 50;
     textHeight = this.itemHeight || 50;
-    return [textHeight, textWidth + (root ? xSpacing * 2 : xSpacing)];
+    return [textWidth,textHeight];
   }
   clearSelection() {
     // 清除右键触发的选中单词

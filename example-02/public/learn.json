@@ -38,11 +38,11 @@
           { "name":"生成器" },
           { "name":"过渡" }
         ],
-        "left": false
+        "left": true
       },
       {
         "name":"进阶",
-        "left": false
+        "left": true
       },
       {
         "name":"一级节点",
