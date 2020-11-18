@@ -277,7 +277,7 @@ export default class VueSvgTree extends Vue {
       svg.setAttribute("width", this.root.width);
       this.$emit("toggle", {
         width: this.root.width,
-        height: treeContent?.scrollHeight,
+        height: treeContent?.scrollHeight
       });
     });
   }

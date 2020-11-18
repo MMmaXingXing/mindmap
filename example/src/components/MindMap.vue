@@ -1506,7 +1506,7 @@ export default class MindMap extends Vue {
         a.y = -a.y + yGap;
       }
     });
-    console.log(tl)
+    console.log(tl);
     // right
     const tr = layout.hierarchy(mmdata.data, (d: Mdata) =>
       d.id.split("-").length === 1
@@ -1535,7 +1535,7 @@ export default class MindMap extends Vue {
       a.px = 0;
       a.py = 0;
     });
-    console.log(tr)
+    console.log(tr);
     this.root = tr;
   }
   getDTop() {

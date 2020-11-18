@@ -237,7 +237,7 @@ export default class App extends Vue {
           width: width, //dom 原始宽度
           height: height,
           useCORS: true, // 【重要】开启跨域配置
-          allowTaint: true,
+          allowTaint: true
         };
         html2canvas(shareContent, opts).then(function(canvas) {
           document.body.appendChild(canvas);
