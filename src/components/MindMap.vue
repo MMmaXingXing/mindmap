@@ -250,9 +250,10 @@ export default class MindMap extends Vue {
     .duration(1000)
     .ease(d3.easePolyInOut);
   link = d3
-    .linkHorizontal()
+    .line()
     .x(d => d[0])
-    .y(d => d[1]);
+    .y(d => d[1])
+    .curve(d3.curveStep);
   zoom = d3.zoom() as d3.ZoomBehavior<Element, FlexNode>;
   history = new History();
 
@@ -1172,23 +1173,21 @@ export default class MindMap extends Vue {
     return `depth_${d.depth} node`;
   }
   gTransform(d: FlexNode) {
-    return `translate(${d.dx},${d.dy})`;
+    return `translate(${d.dx + d.size[1] / 2},${d.dy + d.size[0]})`;
   }
   foreignX(d: FlexNode) {
     const { xSpacing, foreignBorderWidth } = this;
-    return (
-      -foreignBorderWidth +
-      (d.data.id !== "0"
-        ? d.data.left
-          ? -d.size[1] + xSpacing
-          : 0
-        : -(d.size[1] - xSpacing) / 2)
-    );
+    // debugger;
+    // console.log(d);
+    // if (d.depth === 0) return 0;
+    return 0;
+    // return -foreignBorderWidth + (-(d.size[0]) / 2);
   }
   foreignY(d: FlexNode) {
+    // if (d.depth === 0) return -(this.foreignBorderWidth + d.size[0] / 2);
     return (
-      -this.foreignBorderWidth +
-      (-d.size[0] / 2)
+      this.foreignBorderWidth +
+      (d.size[1] / 2)
     );
   }
   gBtnTransform(d: FlexNode) {
@@ -1245,10 +1244,11 @@ export default class MindMap extends Vue {
     //   textWidth = -textWidth;
     // }
 
-    return `${link({
-      source: [sourceX, sourceY],
-      target: [-sourceX / 3, d.size[0] / 2]
-    })}L${textWidth},${0}`;
+    // return `${link({
+    //   source: [sourceX, sourceY],
+    //   target: [d.size[0] / 2, d.size[1] / 2]
+    // })}`;
+    return `${link([[sourceX, sourceY - 20], [sourceX, sourceY + 20], [d.size[0] / 2, d.size[1] / 2 - 20],[d.size[0] / 2, d.size[1] / 2]])}`;
   }
   nest(d: FlexNode, i: number, n: ArrayLike<Element>) {
     const { dKey, appendNode, updateNode, exitNode } = this;
