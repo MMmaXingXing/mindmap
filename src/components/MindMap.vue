@@ -1248,7 +1248,7 @@ export default class MindMap extends Vue {
     //   source: [sourceX, sourceY],
     //   target: [d.size[0] / 2, d.size[1] / 2]
     // })}`;
-    return `${link([[sourceX, sourceY - 20], [sourceX, sourceY + 20], [d.size[0] / 2, d.size[1] / 2 - 20],[d.size[0] / 2, d.size[1] / 2]])}`;
+    return `${link([[sourceX, sourceY - 20], [sourceX, sourceY + 20], [d.size[0] / 2,  -d.y + 20],[d.size[0] / 2, d.size[1] / 2]])}`;
   }
   nest(d: FlexNode, i: number, n: ArrayLike<Element>) {
     const { dKey, appendNode, updateNode, exitNode } = this;
@@ -1493,6 +1493,7 @@ export default class MindMap extends Vue {
     const { ySpacing } = this;
     const layout = flextree({ spacing: ySpacing });
     const yGap = mmdata.data.size[1] / 2;
+    const xLenth = mmdata.data.size[0];
     console.log("tree-mmdata.size", mmdata.data);
     // left
     const tl = layout.hierarchy(mmdata.data, (d: Mdata) =>
@@ -1515,9 +1516,12 @@ export default class MindMap extends Vue {
     layout(tr);
     tr.each((a: FlexNode) => {
       if (a.data.id !== "0") {
-        a.x = a.x + yGap * 2;
+        const idList = a.data.id.split("-");
+        const currentItem = Number(idList[idList.length - 1] || 0);
+        a.x =  (yGap * 2) * currentItem + a.x / 2 ;
+        debugger;
       }
-      a.y = a.depth * (a.size[0] + yGap);
+      a.y = a.size[0] + yGap;
       // debugger;
     }); // 往同个方向移动固定距离
     // all
@@ -1526,10 +1530,17 @@ export default class MindMap extends Vue {
         ? tr.children.concat(tl.children)
         : tl.children
       : tr.children;
+    console.log(tr);
     tr.each((a: FlexNode) => {
       // x纵轴 y横轴 dx dy相对偏移
       if (a.data.id !== "0") {
-        a.x += a.size[1] / 2;
+        const idList = a.data.id.split("-");
+        const currentItem = Number(idList[idList.length - 1] || 0);
+        // a.x = a.x + yGap;
+        // a.x = ( a.size[1] ) * currentItem;
+        // console.log(currentItem);
+        console.log(a.data.name)
+        console.log(a.x)
       }
       a.dx = a.x + (a.parent ? a.parent.x : 0) + yGap;
       a.dy = a.y;
