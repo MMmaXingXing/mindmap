@@ -510,7 +510,7 @@ export default class MindMap extends Vue {
       .transition()
       .end()
       .then(() => {
-        this.mindmapSvg.call(this.zoom.translateTo, 0, 0);
+        this.mindmapSvg.call(this.zoom.translateTo, 0, 1500);
       });
   }
   async fitContent() {
@@ -1229,14 +1229,14 @@ export default class MindMap extends Vue {
   }
   path(d: FlexNode) {
     const { xSpacing, link } = this;
-    const temp =
-      d.parent && d.parent.data.id === "0"
-        ? -d.dy
-        : d.data.left
-        ? xSpacing
-        : -xSpacing;
+    // const temp =
+    //   d.parent && d.parent.data.id === "0"
+    //     ? -d.dy
+    //     : d.data.left
+    //     ? xSpacing
+    //     : -xSpacing;
     // debugger;
-    const sourceX = -d.dx + xSpacing;
+    const sourceX = -d.dx + 50;
     const sourceY = -d.dy;
     const textWidth = 0;
     // let textWidth = d.size[1] - xSpacing;
@@ -1518,10 +1518,9 @@ export default class MindMap extends Vue {
       if (a.data.id !== "0") {
         const idList = a.data.id.split("-");
         const currentItem = Number(idList[idList.length - 1] || 0);
-        a.x =  (yGap * 2) * currentItem + a.x / 2 ;
-        debugger;
+        // a.x =  a.x ;
       }
-      a.y = a.size[0] + yGap;
+      a.y = a.size[0];
       // debugger;
     }); // 往同个方向移动固定距离
     // all
@@ -1538,11 +1537,11 @@ export default class MindMap extends Vue {
         const currentItem = Number(idList[idList.length - 1] || 0);
         // a.x = a.x + yGap;
         // a.x = ( a.size[1] ) * currentItem;
-        // console.log(currentItem);
+        // console.log(currentItem); 
         console.log(a.data.name)
         console.log(a.x)
       }
-      a.dx = a.x + (a.parent ? a.parent.x : 0) + yGap;
+      a.dx = a.x;
       a.dy = a.y;
       a.px = 0;
       a.py = 0;
@@ -1569,7 +1568,7 @@ export default class MindMap extends Vue {
     //   })
     textWidth = this.itemWidth || 50;
     textHeight = this.itemHeight || 50;
-    return [textWidth,textHeight];
+    return [textWidth, textHeight];
   }
   clearSelection() {
     // 清除右键触发的选中单词
