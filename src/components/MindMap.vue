@@ -144,7 +144,6 @@ export default class MindMap extends Vue {
   @Prop({ default: 160 }) itemHeight!: number;
   @Prop({ default: 50 }) xSpacing!: number;
   @Prop({ default: 30 }) ySpacing!: number;
-  @Prop({ default: true }) draggable!: boolean;
   @Prop({ default: true }) gps!: boolean;
   @Prop({ default: true }) fitView!: boolean;
   @Prop({ default: true }) download!: boolean;
@@ -163,10 +162,6 @@ export default class MindMap extends Vue {
   @Watch("showNodeAdd")
   onShowNodeAddChanged(val: boolean) {
     this.makeNodeAdd(val);
-  }
-  @Watch("draggable")
-  onDraggableChanged(val: boolean) {
-    this.makeDrag(val);
   }
   @Watch("contextMenu")
   onContextMenuChanged(val: boolean) {
@@ -351,7 +346,6 @@ export default class MindMap extends Vue {
   }
   initNodeEvent() {
     // 绑定节点事件
-    this.makeDrag(this.draggable);
     this.makeNodeAdd(this.showNodeAdd);
     this.makeContextMenu(this.contextMenu);
   }
@@ -402,35 +396,6 @@ export default class MindMap extends Vue {
       selection.on("contextmenu", this.fObjectRightClick);
     } else {
       selection.on("contextmenu", null);
-    }
-  }
-  makeDrag(val: boolean) {
-    const { mindmapG, dragged, fObjMousedown, dragended } = this;
-    const selection = mindmapG.selectAll("foreignObject") as d3.Selection<
-      Element,
-      FlexNode,
-      Element,
-      FlexNode
-    >;
-    const drag = d3
-      .drag()
-      .container(
-        (d, i, n) => n[i].parentNode?.parentNode as d3.DragContainerElement
-      ) as d3.DragBehavior<Element, FlexNode, FlexNode>;
-    if (val) {
-      selection.call(
-        drag
-          .on("start", fObjMousedown)
-          .on("drag", dragged)
-          .on("end", dragended)
-      );
-    } else {
-      selection.call(
-        drag
-          .on("start", null)
-          .on("drag", null)
-          .on("end", null)
-      );
     }
   }
   makeZoom(val: boolean) {
@@ -1017,82 +982,6 @@ export default class MindMap extends Vue {
           }
         });
     }
-  }
-  dragback(d: FlexNode, draggedNode: Element) {
-    this.draggedNodeRenew(draggedNode, 0, 0, 1000, d);
-  }
-  dragended(d: FlexNode, i: number, n: ArrayLike<Element>) {
-    const { dragback, reparent, fObjectClick } = this;
-    const draggedNode = n[i].parentNode as Element;
-    const newParentNode = document.getElementById("newParentNode");
-    if (newParentNode) {
-      // 建立新的父子关系
-      newParentNode.removeAttribute("id");
-      const newParentD = d3.select(newParentNode).data()[0] as FlexNode;
-      reparent(newParentD.data, d.data);
-    } else {
-      const LR =
-        d.data.id.split("-").length === 2 &&
-        ((d.y > 0 && d.y + d.py < 0) || (d.y < 0 && d.y + d.py > 0)); // 左右节点变换
-      const flag = LR
-        ? (a: FlexNode) => a.data.left !== d.data.left
-        : (a: FlexNode) => a.data.left === d.data.left;
-      const draggedParentNode = d3.select(draggedNode.parentNode as Element);
-      const draggedBrotherNodes = (draggedParentNode.selectAll(
-        `g.depth_${d.depth}`
-      ) as d3.Selection<Element, FlexNode, Element, FlexNode>).filter(
-        (a, i, n) => draggedNode !== n[i] && flag(a)
-      );
-      if (!draggedBrotherNodes.nodes()[0]) {
-        // 无兄弟节点时
-        if (LR) {
-          this.move(d.data);
-        } else {
-          dragback(d, draggedNode);
-          fObjectClick(d, i, n);
-        }
-      } else {
-        const a: {
-          x0: number;
-          x1: number;
-          b1?: Mdata;
-          n1?: Element;
-          b0?: Mdata;
-          n0?: Element;
-        } = { x0: Infinity, x1: -Infinity };
-        draggedBrotherNodes.each((b, i, n) => {
-          if ((b.x > d.x || LR) && b.x > a.x1 && b.x < d.x + d.px) {
-            // 找到新哥哥节点
-            a.x1 = b.x;
-            a.b1 = b.data;
-            a.n1 = n[i];
-          }
-          if ((b.x < d.x || LR) && b.x < a.x0 && b.x > d.x + d.px) {
-            // 找到新弟弟节点
-            a.x0 = b.x;
-            a.b0 = b.data;
-            a.n0 = n[i];
-          }
-        });
-        if (a.b0 || a.b1) {
-          // 存在新兄弟节点时调换节点顺序
-          const sdata = d.data;
-          if (a.b0 && a.n0) {
-            // 插入在兄弟节点前面
-            this.move(sdata, a.b0);
-            draggedNode.parentNode?.insertBefore(draggedNode, a.n0);
-          } else if (a.b1 && a.n1) {
-            // 插入在兄弟节点后面
-            this.move(sdata, a.b1, 1);
-            draggedNode.parentNode?.insertBefore(draggedNode, a.n1.nextSibling);
-          }
-        } else {
-          dragback(d, draggedNode);
-          fObjectClick(d, i, n);
-        }
-      }
-    }
-    this.dragFlag = false;
   }
   // 多选
   removeMultiSelected() {
